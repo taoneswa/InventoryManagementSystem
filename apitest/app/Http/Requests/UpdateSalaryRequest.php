@@ -23,9 +23,12 @@ class UpdateSalaryRequest extends FormRequest
     {
         return [
             "employee_id"=> "required",
-            'month'=>'required',
-            "year"=> "required",
+            'salary_month'=>'required',
+            "salary_year"=> "required",
             "advance_salary"=> "required",
+            "paid_amount"=> "required",
+
         ];
+
     }
 }
