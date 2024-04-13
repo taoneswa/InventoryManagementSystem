@@ -7,20 +7,12 @@ import NotFound from "./views/NotFound";
 import Signup from "./views/Signup";
 import Users from "./views/Users";
 import UserForm from "./views/UserForm";
-import Home from "./Home";
 import EmployeeListPage from "./views/Employees/EmployeeListPage";
-import EmployeeAddPage from "./views/Employees/EmployeeAddPage";
-import EmployeeEditPage from "./views/Employees/EmployeeEditPage";
-import EmployeeViewPage from "./views/Employees/EmployeeViewPage";
 import ReportsListPage from "./views/Reports/ReportsListPage";
-import ReportsViewPage from "./views/Reports/ReportsViewPage";
-import ProductListPage from "./views/Products/ProductListPage";
-import ProductViewPage from "./views/Products/ProductViewPage";
-import OrderingListPage from "./views/Ordering/OrderingListPage";
 import SalaryListPage from "./views/Salary/SalaryListPage";
-import CustomerListPage from "./views/Customer/CustomerListPage";
-
-
+import CustomerListPage from "./views/Customers/CustomersListPage";
+import ProductListPage from "./views/Product/ProductListPage";
+import Home from "./Home";
 const router = createBrowserRouter([
   {
     path: '/',
@@ -46,55 +38,31 @@ const router = createBrowserRouter([
         path: '/users/:id',
         element: <UserForm key="userUpdate" />
       },
-      // Added routes
-      {
-        path: '/home',
-        element: <Home />
-      },
       {
         path: '/employee',
         element: <EmployeeListPage />
-      },
-      {
-        path: '/employee/add',
-        element: <EmployeeAddPage />
-      },
-      {
-        path: '/employee/edit/:id',
-        element: <EmployeeEditPage />
-      },
-      {
-        path: '/employee/view/:id',
-        element: <EmployeeViewPage />
       },
       {
         path: '/reports',
         element: <ReportsListPage />
       },
       {
-        path: '/reports/view/:id',
-        element: <ReportsViewPage />
+        path: '/salary',
+        element: <SalaryListPage />,
+      },
+      {
+        path: '/home',
+        element: <Home />,
+      },
+      {
+        path: '/customer',
+        element: <CustomerListPage />,
       },
       {
         path: '/product',
         element: <ProductListPage />
-      },
-      {
-        path: '/product/view/:id',
-        element: <ProductViewPage />
-      },
-      {
-        path: '/ordering',
-        element: <OrderingListPage />
-      },
-      {
-        path: '/salary',
-        element: <SalaryListPage />
-      },
-      {
-        path: '/customer',
-        element: <CustomerListPage />
       }
+
     ]
   },
   {

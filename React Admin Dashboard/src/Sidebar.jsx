@@ -134,6 +134,12 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
             <BsFillGearFill className='icon' /> Setting
           </a>
         </li>
+        <li className='sidebar-list-item'>
+          <a href="/users">
+            <BsFillGearFill className='icon' /> Users
+          </a>
+        </li>
+
       </ul>
       <div>
         {user.name} &nbsp; &nbsp;
