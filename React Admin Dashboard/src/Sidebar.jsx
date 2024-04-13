@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { BsCart3, BsFillArchiveFill, BsFillGrid3X3GapFill, BsPeopleFill, BsListCheck, BsMenuButtonWideFill, BsFillGearFill } from 'react-icons/bs';
-import { useStateContext } from './pages/ContextsProvider';
+import { useStateContext } from './context/ContextProvider.jsx';
+import axiosClient from './axios-client.js';
+import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom'; // Import Navigate from React Router
 
 function Sidebar({ openSidebarToggle, OpenSidebar }) {

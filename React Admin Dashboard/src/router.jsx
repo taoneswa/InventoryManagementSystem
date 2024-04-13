@@ -12,11 +12,12 @@ import ReportsListPage from "./views/Reports/ReportsListPage";
 import SalaryListPage from "./views/Salary/SalaryListPage";
 import CustomerListPage from "./views/Customers/CustomersListPage";
 import ProductListPage from "./views/Product/ProductListPage";
+import Siderbar from "./Sidebar";
 import Home from "./Home";
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <DefaultLayout />,
+    element: <Siderbar />,
     children: [
       {
         path: '/',
