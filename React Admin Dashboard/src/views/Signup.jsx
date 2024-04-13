@@ -20,7 +20,7 @@ export default function Signup() {
       password: passwordRef.current.value,
       password_confirmation: passwordConfirmationRef.current.value,
     }
-    axiosClient.post('/signup', payload)
+    axiosClient.post('/register', payload)
       .then(({ data }) => {
         setUser(data.user)
         setToken(data.token);

@@ -24,7 +24,7 @@ class OwnCors
         $response->header('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE');
 
         // Allow the following headers
-        $response->header('Access-Control-Allow-Headers', 'Content-Type, X-Auth-Token, Origin, Authorization');
+        $response->header('Access-Control-Allow-Headers', 'Content-Type,  Origin, Authorization, X-Requested-With');
 
         return $response;
     }
