@@ -18,8 +18,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TransactionsController;
 use Illuminate\Http\Request;
 // Routes outside the middleware group
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+
 
 Route::middleware('auth:sanctum')->group(function () {
     // Protected routes requiring authentication
@@ -41,5 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::resource('/stock', StockController::class);
     Route::resource('/supplier', SupplierController::class);
     Route::resource('/transactions', TransactionsController::class);
+    Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/login', [AuthController::class, 'login']);
 });
 
