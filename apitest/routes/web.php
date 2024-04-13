@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
@@ -32,4 +33,6 @@ Route::resource('/settings',SettingsController::class);
 Route::resource('/stock',StockController::class);
 Route::resource('/supplier', SupplierController::class);
 Route::resource('/transactions', TransactionsController::class);
-Route::resource('/user', UserController::class);
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout']);

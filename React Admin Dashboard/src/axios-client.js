@@ -1,8 +1,8 @@
 import axios from "axios";
-import {useStateContext} from "./context/ContextProvider.jsx";
+import { useStateContext } from "./context/ContextProvider.jsx";
 
 const axiosClient = axios.create({
-  baseURL: `${import.meta.env.VITE_API_BASE_URL}/api`
+  baseURL: `${import.meta.env.VITE_API_BASE_URL}`
 })
 
 axiosClient.interceptors.request.use((config) => {
@@ -14,7 +14,7 @@ axiosClient.interceptors.request.use((config) => {
 axiosClient.interceptors.response.use((response) => {
   return response
 }, (error) => {
-  const {response} = error;
+  const { response } = error;
   if (response.status === 401) {
     localStorage.removeItem('ACCESS_TOKEN')
     // window.location.reload();
