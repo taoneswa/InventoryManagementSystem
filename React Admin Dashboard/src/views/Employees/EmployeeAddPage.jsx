@@ -1,91 +1,131 @@
-import React, { useState } from 'react';
-import { Button, TextField, Grid, Paper, Typography, Snackbar } from '@mui/material';
-import axios from 'axios';
-const EmployeeAddPage = () => {
-    const [employeeData, setEmployeeData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-        employee_id: '',
-        nid_no: '',
-        experience: '',
-        photo: '',
-        salary: '',
-        vacation: '',
-        city: '',
-        address: '',
-    });
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axiosClient from "../../axios-client.js";
+import { useStateContext } from "../../context/ContextProvider.jsx";
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setEmployeeData({ ...employeeData, [name]: value });
-    };
+export default function EmployeeAddPage() {
+  const navigate = useNavigate();
+  const { setNotification } = useStateContext();
 
+  const [employee, setEmployee] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    photo: "",
+    nid_no: "",
+    experience: "",
+    address: "",
+    city: "",
+    salary: "",
+    vacation: ""
+  });
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('/api/employee', employeeData,
-                {
-                    headers: {
-                        'Content-Type': 'application/json' // Adjust content type as needed
-                    }
-                }
-            ); // Adjust the API URL as needed
-            if (response.status === 200 || response.status === 201) {
-                setSnackbarMessage('Employee added successfully!');
-                setSnackbarOpen(true);
-                // Clear form or redirect as needed
-            }
-        } catch (error) {
-            console.error('Error adding employee:', error);
-            setSnackbarMessage('Failed to add employee!');
-            setSnackbarOpen(true);
+  const [errors, setErrors] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = (ev) => {
+    ev.preventDefault();
+    setLoading(true);
+    axiosClient
+      .post("/employees", employee)
+      .then(() => {
+        setNotification("Employee was successfully added");
+        navigate("/employees");
+      })
+      .catch((err) => {
+        setLoading(false);
+        const response = err.response;
+        if (response && response.status === 422) {
+          setErrors(response.data.errors);
         }
-    };
+      });
+  };
 
-    const handleSnackbarClose = () => {
-        setSnackbarOpen(false);
-    };
-
-    return (
-        <Grid container justifyContent="center" className='main-container'>
-            <Grid item xs={12} md={8} lg={6}>
-                <Paper style={{ padding: 20, marginTop: 30 }}>
-                    <Typography variant="h6" gutterBottom>
-                        Add New Employee
-                    </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <Grid container spacing={2}>
-                            {Object.keys(employeeData).map((key) => (
-                                key !== 'photo' ? (
-                                    <Grid item xs={12} sm={6} key={key}>
-                                        <TextField
-                                            fullWidth
-                                            label={key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}
-                                            variant="outlined"
-                                            name={key}
-                                            value={employeeData[key]}
-                                            onChange={handleChange}
-                                            type={key === 'email' ? 'email' : 'text'}
-                                        />
-                                    </Grid>
-                                ) : null
-                            ))}
-                            <Grid item xs={12}>
-                                <Button type="submit" variant="contained" color="primary">
-                                    Submit
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </form>
-                </Paper>
-            </Grid>
-            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose} message={snackbarMessage} />
-        </Grid>
-    );
-};
-
-export default EmployeeAddPage;
+  return (
+    <>
+      <h1>Add Employee</h1>
+      <div className="card animated fadeInDown">
+        <form onSubmit={onSubmit}>
+          <input
+            value={employee.name}
+            onChange={(ev) =>
+              setEmployee({ ...employee, name: ev.target.value })
+            }
+            placeholder="Name"
+          />
+          <input
+            value={employee.email}
+            onChange={(ev) =>
+              setEmployee({ ...employee, email: ev.target.value })
+            }
+            placeholder="Email"
+          />
+          <input
+            value={employee.phone}
+            onChange={(ev) =>
+              setEmployee({ ...employee, phone: ev.target.value })
+            }
+            placeholder="Phone"
+          />
+          <input
+            value={employee.photo}
+            onChange={(ev) =>
+              setEmployee({ ...employee, photo: ev.target.value })
+            }
+            placeholder="Photo URL"
+          />
+          <input
+            value={employee.nid_no}
+            onChange={(ev) =>
+              setEmployee({ ...employee, nid_no: ev.target.value })
+            }
+            placeholder="NID No"
+          />
+          <input
+            value={employee.experience}
+            onChange={(ev) =>
+              setEmployee({ ...employee, experience: ev.target.value })
+            }
+            placeholder="Experience"
+          />
+          <input
+            value={employee.address}
+            onChange={(ev) =>
+              setEmployee({ ...employee, address: ev.target.value })
+            }
+            placeholder="Address"
+          />
+          <input
+            value={employee.city}
+            onChange={(ev) =>
+              setEmployee({ ...employee, city: ev.target.value })
+            }
+            placeholder="City"
+          />
+          <input
+            value={employee.salary}
+            onChange={(ev) =>
+              setEmployee({ ...employee, salary: ev.target.value })
+            }
+            placeholder="Salary"
+          />
+          <input
+            value={employee.vacation}
+            onChange={(ev) =>
+              setEmployee({ ...employee, vacation: ev.target.value })
+            }
+            placeholder="Vacation"
+          />
+          <button className="btn">Add Employee</button>
+        </form>
+        {errors && (
+          <div className="alert">
+            {Object.keys(errors).map((key) => (
+              <p key={key}>{errors[key][0]}</p>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
+  );
+}

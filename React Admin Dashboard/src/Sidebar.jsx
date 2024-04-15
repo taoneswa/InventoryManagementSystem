@@ -43,7 +43,7 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
   };
 
   return (
-    <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive" : ""}>
+    <aside id="sidebar" className={openSidebarToggle ? "sidebar-responsive" : "sidebar-left"}>
       <div className='sidebar-title'>
         <div className='sidebar-brand'>
           <BsCart3 className='icon_header' /> INVENTORY MANAGEMENT SYS

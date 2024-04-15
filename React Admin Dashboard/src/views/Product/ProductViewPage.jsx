@@ -1,95 +1,117 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { Paper, Typography, Grid, CircularProgress } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import axiosClient from "../../axios-client.js";
+import { Link } from "react-router-dom";
+import { useStateContext } from "../../context/ContextProvider.jsx";
 
-const ProductViewPage = () => {
-    const { id } = useParams();
-    const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+export default function ProductViewPage() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const { setNotification } = useStateContext();
 
-    useEffect(() => {
-        const fetchProduct = async () => {
-            try {
-                const response = await axios.get(`api/product/${id}`); // Adjust the API URL as needed
-                setProduct(response.data);
-                setLoading(false);
-            } catch (err) {
-                console.error('Failed to fetch product:', err);
-                setError('Failed to fetch product details');
-                setLoading(false);
-            }
-        };
+  useEffect(() => {
+    getProducts();
+  }, []);
 
-        fetchProduct();
-    }, [id]);
-
-    if (loading) {
-        return (
-            <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
-                <CircularProgress />
-            </Grid>
-        );
+  const onDeleteClick = product => {
+    if (!window.confirm("Are you sure you want to delete this product?")) {
+      return;
     }
+    axiosClient
+      .delete(`/products/${product.id}`)
+      .then(() => {
+        setNotification("Product was successfully deleted");
+        getProducts();
+      })
+      .catch(error => {
+        console.error("Error deleting product:", error);
+      });
+  };
 
-    if (error) {
-        return (
-            <Typography variant="h6" color="error" textAlign="center">
-                {error}
-            </Typography>
-        );
-    }
+  const getProducts = () => {
+    setLoading(true);
+    axiosClient
+      .get("/products")
+      .then(({ data }) => {
+        setLoading(false);
+        setProducts(data.data);
+      })
+      .catch(error => {
+        console.error("Error fetching products:", error);
+        setLoading(false);
+      });
+  };
 
-    return (
-        <div className='main-container'>
-            <Paper elevation={3} style={{ padding: 20, margin: '20px auto', maxWidth: 600 }}>
-                <Typography variant="h4" component="h1" gutterBottom>
-                    Product Details
-                </Typography>
-                {product ? (
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Category ID:</strong> {product.cat_id}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Supplier ID:</strong> {product.sup_id}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Product Name:</strong> {product.product_name}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Product Code:</strong> {product.product_code}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Product Garage:</strong> {product.product_garage}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Product Route:</strong> {product.product_route}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Product Image:</strong> {product.product_image}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Buy Date:</strong> {product.buy_date}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Expire Date:</strong> {product.expire_date}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Buying Price:</strong> {product.buying_price}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Price:</strong> {product.price}</Typography>
-                        </Grid>
-                    </Grid>
-                ) : (
-                    <Typography variant="body1">Product not found</Typography>
-                )}
-            </Paper>
-        </div>
-
-    );
-};
-
-export default ProductViewPage;
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h1>Products</h1>
+        <Link className="btn-add" to="/products/new">
+          Add new
+        </Link>
+      </div>
+      <div className="card animated fadeInDown">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Category ID</th>
+              <th>Supplier ID</th>
+              <th>Name</th>
+              <th>Code</th>
+              <th>Garage</th>
+              <th>Route</th>
+              <th>Image</th>
+              <th>Buy Date</th>
+              <th>Expire Date</th>
+              <th>Buying Price</th>
+              <th>Price</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          {loading && (
+            <tbody>
+              <tr>
+                <td colSpan="13" className="text-center">
+                  Loading...
+                </td>
+              </tr>
+            </tbody>
+          )}
+          {!loading && (
+            <tbody>
+              {products.map(p => (
+                <tr key={p.id}>
+                  <td>{p.id}</td>
+                  <td>{p.cat_id}</td>
+                  <td>{p.sup_id}</td>
+                  <td>{p.product_name}</td>
+                  <td>{p.product_code}</td>
+                  <td>{p.product_garage}</td>
+                  <td>{p.product_route}</td>
+                  <td>
+                    {p.product_image && (
+                      <img src={p.product_image} alt={p.product_name} style={{ width: "50px", height: "auto" }} />
+                    )}
+                  </td>
+                  <td>{p.buy_date}</td>
+                  <td>{p.expire_date}</td>
+                  <td>{p.buying_price}</td>
+                  <td>{p.price}</td>
+                  <td>
+                    <Link className="btn-edit" to={`/products/${p.id}`}>
+                      Edit
+                    </Link>
+                    &nbsp;
+                    <button className="btn-delete" onClick={() => onDeleteClick(p)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          )}
+        </table>
+      </div>
+    </div>
+  );
+}

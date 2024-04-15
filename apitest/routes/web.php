@@ -1,45 +1,18 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\AttendanceController;
-use App\Http\Controllers\BrandController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\CustomersController;
-use App\Http\Controllers\EmployeeController;
-use App\Http\Controllers\OrderingController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ReportsController;
-use App\Http\Controllers\SalaryController;
-use App\Http\Controllers\SettingsController;
-use App\Http\Controllers\StockController;
-use App\Http\Controllers\SupplierController;
-use App\Http\Controllers\TransactionsController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
 
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/user', function (Request $request) {
-        return $request->user();
-    });
-    Route::post('api/register', [AuthController::class, 'register']);
-    Route::post('api/login', [AuthController::class, 'login']);
-    Route::post('api/logout', [AuthController::class, 'logout']);
-    Route::apiResource('/users', UserController::class);
-    Route::apiResource('api/employee', EmployeeController::class);
-    Route::resource('/attendance', AttendanceController::class);
-    Route::resource('/brand',BrandController::class);
-    Route::resource('/category', CategoryController::class);
-    Route::resource('/customer', CustomersController::class);
-    Route::resource('/ordering', OrderingController::class);
-    Route::resource('/product',ProductController::class);
-    Route::apiResource('api/reports',ReportsController::class);
-    Route::resource('/salary',SalaryController::class);
-    Route::resource('/settings',SettingsController::class);
-    Route::resource('/stock',StockController::class);
-    Route::resource('/supplier', SupplierController::class);
-    Route::resource('/transactions', TransactionsController::class);
+Route::get('/', function () {
+    return view('welcome');
 });

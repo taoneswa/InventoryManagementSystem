@@ -3,28 +3,42 @@ import Dashboard from "./Dashboard.jsx";
 import DefaultLayout from "./components/DefaultLayout";
 import GuestLayout from "./components/GuestLayout";
 import Login from "./views/Login";
+import './App.css'
 import NotFound from "./views/NotFound";
 import Signup from "./views/Signup";
+import Header from './Header.jsx'
 import Users from "./views/Users";
 import UserForm from "./views/UserForm";
-import EmployeeListPage from "./views/Employees/EmployeeListPage";
 import ReportsListPage from "./views/Reports/ReportsListPage";
 import SalaryListPage from "./views/Salary/SalaryListPage";
-import CustomerListPage from "./views/Customers/CustomersListPage";
 import ProductListPage from "./views/Product/ProductListPage";
-import Siderbar from "./Sidebar";
+import Siderbar from "./Sidebar.jsx";
 import Home from "./Home";
+import BrandViewPage from "./views/Brand/BrandViewPage.jsx";
+import BrandAddPage from "./views/Brand/BrandAddPage.jsx";
+import CategoryViewPage from "./views/Categories/CategoryViewPage.jsx";
+import ProductViewPage from "./views/Product/ProductViewPage.jsx";
+import ProductAdd from "./views/Product/ProductAddPage.jsx";
+import StockViewPage from "./views/Stock/StockViewPage.jsx";
+import StockAddPage from "./views/Stock/StockAddPage.jsx";
+import EmployeeViewPage from "./views/Employees/EmployeeViewPage.jsx";
+import EmployeeAddPage from "./views/Employees/EmployeeAddPage.jsx";
+import CustomersViewPage from "./views/Customers/CustomersViewPage.jsx";
+import CustomersAddPage from "./views/Customers/CustomersAddPage.jsx";
+import SupplierViewPage from "./views/Supplier/SupplierViewPage.jsx";
+import SupplierAddPage from "./views/Supplier/SupplierAddPage.jsx";
 const router = createBrowserRouter([
+
   {
     path: '/',
-    element: <Siderbar />,
+    element: <DefaultLayout />,
     children: [
       {
-        path: '/',
+        path: '/users',
         element: <Navigate to="/users" />
       },
       {
-        path: '/dashboard',
+        path: '/',
         element: <Dashboard />
       },
       {
@@ -32,17 +46,73 @@ const router = createBrowserRouter([
         element: <Users />
       },
       {
+        path: '/brands',
+        element: <BrandViewPage />
+      },
+      {
+        path: '/categories',
+        element: <CategoryViewPage />
+      },
+      {
+        path: '/products',
+        element: <ProductViewPage />
+      },
+      {
+        path: '/stock',
+        element: <StockViewPage />
+      },
+
+      {
+        path: '/stock/new',
+        element: <StockAddPage key="stockCreate" />
+      },
+
+      {
+        path: '/products/new',
+        element: <ProductAdd key="productCreate" />
+      },
+
+      {
+        path: '/brands/new',
+        element: <BrandAddPage key="brandCreate" />
+      },
+
+      {
         path: '/users/new',
         element: <UserForm key="userCreate" />
       },
+      {
+        path: '/employees/new',
+        element: <EmployeeAddPage key="employeeCreate"
+        />
+      },
+
+      {
+        path: '/brands/:id',
+        element: <BrandAddPage key="brandUpdate" />
+      },
+
       {
         path: '/users/:id',
         element: <UserForm key="userUpdate" />
       },
       {
-        path: '/employee',
-        element: <EmployeeListPage />
+        path: '/customers/:id',
+        element: <CustomersAddPage key="customerUpdate" />
       },
+      {
+        path: '/employees',
+        element: <EmployeeViewPage />
+      },
+      {
+        path: '/suppliers',
+        element: <SupplierViewPage />
+      },
+      {
+        path: '/suppliers',
+        element: <SupplierAddPage key="supplierCreate" />
+      },
+
       {
         path: '/reports',
         element: <ReportsListPage />
@@ -56,9 +126,10 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: '/customer',
-        element: <CustomerListPage />,
+        path: '/customers',
+        element: <CustomersViewPage />,
       },
+
       {
         path: '/product',
         element: <ProductListPage />
