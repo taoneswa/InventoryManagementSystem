@@ -79,7 +79,7 @@ export default function ProductViewPage() {
           )}
           {!loading && (
             <tbody>
-              {products.map(p => (
+              {products && products.map(p => (
                 <tr key={p.id}>
                   <td>{p.id}</td>
                   <td>{p.cat_id}</td>
@@ -110,6 +110,7 @@ export default function ProductViewPage() {
               ))}
             </tbody>
           )}
+          
         </table>
       </div>
     </div>

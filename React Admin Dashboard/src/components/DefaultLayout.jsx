@@ -34,7 +34,7 @@ export default function DefaultLayout() {
         <Link to="/users">Users</Link>
         <Link to="/products">Products</Link>
         <Link to="/stock">Stock</Link>
-        <Link to="/customers">Customers</Link>
+        <Link to="/customers">Customers</Link>  
         <Link to="/suppliers">Suppliers</Link>
         <Link to="/categories">Categories</Link>
         <Link to="/orders">Orders</Link>

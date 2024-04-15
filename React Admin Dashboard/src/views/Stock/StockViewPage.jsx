@@ -17,7 +17,7 @@ export default function StockViewPage() {
     axiosClient.get('/stock')
       .then(({ data }) => {
         setLoading(false);
-        setStock(data.data);
+        setStock(data.data || []); // Ensure data.data is an array or default to empty array
       })
       .catch(() => {
         setLoading(false);
@@ -31,26 +31,19 @@ export default function StockViewPage() {
         <Link className="btn-add" to="/stock/new">Add new</Link>
       </div>
       <div className="card animated fadeInDown">
-        <table>
-          <thead>
-            <tr>
-              <th>Product ID</th>
-              <th>Quantity</th>
-              <th>Amount</th>
-              <th>Total Amount</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          {loading &&
-            <tbody>
+        {loading ? (
+          <div>Loading...</div>
+        ) : (
+          <table>
+            <thead>
               <tr>
-                <td colSpan="5" className="text-center">
-                  Loading...
-                </td>
+                <th>Product ID</th>
+                <th>Quantity</th>
+                <th>Amount</th>
+                <th>Total Amount</th>
+                <th>Actions</th>
               </tr>
-            </tbody>
-          }
-          {!loading &&
+            </thead>
             <tbody>
               {stock.map(item => (
                 <tr key={item.product_id}>
@@ -66,8 +59,8 @@ export default function StockViewPage() {
                 </tr>
               ))}
             </tbody>
-          }
-        </table>
+          </table>
+        )}
       </div>
     </div>
   )
