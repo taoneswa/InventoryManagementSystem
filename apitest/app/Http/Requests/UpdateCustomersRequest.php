@@ -35,7 +35,7 @@ class UpdateCustomersRequest extends FormRequest
            "bank_name"=> "required",
            "account_holder"=> "max:20",
            "account_number"=> "required",
-           "bank_branch"=> "required|numeric",
+           "bank_branch"=> "required",
         ];
     }
 }

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->integer('quantity');
             $table->decimal('amount');
             $table->decimal('total_amount');
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->timestamps();
         });
     }

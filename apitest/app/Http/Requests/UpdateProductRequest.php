@@ -27,6 +27,7 @@ class UpdateProductRequest extends FormRequest
             "brand_id" => "required",
             "product_name" => "required",
             "product_code" => "required",
+            "product_id" => "required",
             "product_garage" => "required",
             "product_route" => "required",
             "buy_date"=> "required",

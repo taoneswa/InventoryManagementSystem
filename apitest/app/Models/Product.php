@@ -14,6 +14,7 @@ class Product extends Model
         "sup_id",
         "product_name",
         "product_code",
+        "product_id",
         "product_garage",
         "product_route",
         "product_image",

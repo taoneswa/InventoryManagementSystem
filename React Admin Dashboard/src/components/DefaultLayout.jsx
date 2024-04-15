@@ -35,7 +35,6 @@ export default function DefaultLayout() {
     <div id="defaultLayout">
       <aside>
         <Link to="/"><FaHome /> Dashboard</Link>
-        <Link to="/users"><FaUsers /> Users</Link>
         <Link to="/products"><FaBoxes /> Products</Link>
         <Link to="/stock"><FaCubes /> Stock</Link>
         <Link to="/brands"><FaListAlt /> Brand</Link>
@@ -50,6 +49,7 @@ export default function DefaultLayout() {
         <Link to="/expenses"><FaMoneyBillAlt /> Expenses</Link>
         <Link to="/returns"><FaUndoAlt /> Returns</Link>
         <Link to="/employees"><FaUser /> Employees</Link>
+        <Link to="/users"><FaUsers /> Users</Link>
         <Link to="/settings"><FaCog /> Settings</Link>
       </aside>
 

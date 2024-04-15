@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string("cat_id");
             $table->integer("sup_id");
             $table->string("product_name");
+            $table->string("product_id");
             $table->string("product_code")->unique();
             $table->string("product_garage");
             $table->string("product_route");
