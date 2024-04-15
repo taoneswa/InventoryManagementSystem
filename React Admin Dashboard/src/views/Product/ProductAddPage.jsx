@@ -10,6 +10,7 @@ export default function ProductAdd() {
   const [product, setProduct] = useState({
     cat_id: "",
     sup_id: "",
+    cat_id: "",
     product_name: "",
     product_code: "",
     product_garage: "",

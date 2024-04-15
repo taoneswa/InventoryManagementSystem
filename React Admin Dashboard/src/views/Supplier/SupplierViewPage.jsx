@@ -78,7 +78,7 @@ export default function SupplierViewPage() {
           )}
           {!loading && (
             <tbody>
-              {products.map(p => (
+              {products && products.map(p => (
                 <tr key={p.email}>
                   <td>{p.name}</td>
                   <td>{p.email}</td>

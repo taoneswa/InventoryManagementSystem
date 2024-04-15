@@ -76,7 +76,8 @@ export default function CustomersViewPage() {
           }
           {!loading &&
             <tbody>
-              {customers.map(customer => (
+              {customers && customers.map(customer => (
+
                 <tr key={customer.id}>
                   <td>{customer.name}</td>
                   <td>{customer.email}</td>

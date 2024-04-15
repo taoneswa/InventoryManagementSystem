@@ -6,6 +6,15 @@ import { useEffect } from "react";
 export default function DefaultLayout() {
   const { user, token, setUser, setToken, notification } = useStateContext();
 
+
+  useEffect(() => {
+    if (token) {
+      axiosClient.get('/user')
+        .then(({ data }) => {
+          setUser(data)
+        })
+    }
+  }, []);
   if (!token) {
     return <Navigate to="/login" />
   }
@@ -20,13 +29,6 @@ export default function DefaultLayout() {
       })
   }
 
-  useEffect(() => {
-    axiosClient.get('/user')
-      .then(({ data }) => {
-        setUser(data)
-      })
-  }, [])
-
   return (
     <div id="defaultLayout">
       <aside>
@@ -34,7 +36,8 @@ export default function DefaultLayout() {
         <Link to="/users">Users</Link>
         <Link to="/products">Products</Link>
         <Link to="/stock">Stock</Link>
-        <Link to="/customers">Customers</Link>  
+        <Link to="/brands">Brand</Link>
+        <Link to="/customers">Customers</Link>
         <Link to="/suppliers">Suppliers</Link>
         <Link to="/categories">Categories</Link>
         <Link to="/orders">Orders</Link>

@@ -5,7 +5,7 @@ import { useStateContext } from "../../context/ContextProvider.jsx";
 
 export default function BrandViewPage() {
   const [brands, setBrands] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Set initial loading state to true
   const { setNotification } = useStateContext();
 
   useEffect(() => {
@@ -28,17 +28,19 @@ export default function BrandViewPage() {
   };
 
   const getBrands = () => {
-    setLoading(true);
-    axiosClient
-      .get("/brands")
+    setLoading(true)
+    axiosClient.get('/brands')
       .then(({ data }) => {
-        setLoading(false);
-        setBrands(data.data);
+        setLoading(false)
+        setUsers(data.data)
       })
       .catch((error) => {
-        setLoading(false);
+        setLoading(false); // Set loading to false on error
         console.error("Error fetching brands:", error);
       });
+
+
+
   };
 
   return (
@@ -59,7 +61,7 @@ export default function BrandViewPage() {
               <th>Actions</th>
             </tr>
           </thead>
-          {loading && (
+          {loading && ( // Check loading state before rendering table body
             <tbody>
               <tr>
                 <td colSpan="4" className="text-center">
@@ -68,9 +70,9 @@ export default function BrandViewPage() {
               </tr>
             </tbody>
           )}
-          {!loading && (
+          {!loading && ( // Render table body only when data is available
             <tbody>
-              {brands.map((brand) => (
+              {brands && brands.map((brand) => (
                 <tr key={brand.id}>
                   <td>{brand.name}</td>
                   <td>{brand.cat_id}</td>
@@ -86,6 +88,7 @@ export default function BrandViewPage() {
                   </td>
                 </tr>
               ))}
+
             </tbody>
           )}
         </table>

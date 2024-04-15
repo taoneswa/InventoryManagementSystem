@@ -61,7 +61,7 @@ export default function CategoryViewPage() {
           }
           {!loading &&
             <tbody>
-              {categories.map(category => (
+              {categories && categories.map(category => (
                 <tr key={category.id}>
                   <td>{category.id}</td>
                   <td>{category.category_name}</td>

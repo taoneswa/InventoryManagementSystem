@@ -11,7 +11,6 @@ import Users from "./views/Users";
 import UserForm from "./views/UserForm";
 import ReportsListPage from "./views/Reports/ReportsListPage";
 import SalaryListPage from "./views/Salary/SalaryListPage";
-import ProductListPage from "./views/Product/ProductListPage";
 import Siderbar from "./Sidebar.jsx";
 import Home from "./Home";
 import BrandViewPage from "./views/Brand/BrandViewPage.jsx";
@@ -130,10 +129,7 @@ const router = createBrowserRouter([
         element: <CustomersViewPage />,
       },
 
-      {
-        path: '/product',
-        element: <ProductListPage />
-      }
+
 
     ]
   },
