@@ -46,7 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('/reports',ReportsController::class);
     Route::apiResource('/salary',SalaryController::class);
     Route::apiResource('/settings',SettingsController::class);
-    Route::apiResource('/stock',StockController::class);
+    Route::apiResource('/stocks',StockController::class);
     Route::apiResource('/suppliers', SupplierController::class);
     Route::apiResource('/transactions', TransactionsController::class);
 });

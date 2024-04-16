@@ -15,7 +15,6 @@ class StockController extends Controller
     {
         //
         $stock = Stock::all();
-        // dd($stock);
         return response()->json($stock);
     }
 
@@ -46,10 +45,10 @@ class StockController extends Controller
 
     /**
      * Display the specified resource.
-     */
-    public function show(Stock $stock)
+     */   public function show($id)
     {
-        //
+        $stock = Stock::findOrFail($id);
+        return response()->json($stock);
     }
 
     /**

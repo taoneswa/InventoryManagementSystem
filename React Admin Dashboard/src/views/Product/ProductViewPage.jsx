@@ -27,6 +27,17 @@ export default function ProductViewPage() {
       });
   };
 
+  const getImageURL = (url) => {
+    // Split the URL by backslashes
+    const parts = url.split("\\");
+
+    // Get the last part which contains the filename
+    const filename = parts[parts.length - 1];
+    console.log(`http://127.0.0.1:8000/storage/images/${filename}`)
+    // Construct the new URL
+    return `http://127.0.0.1:8000/storage/images/${filename}`;
+  }
+
   const getProducts = () => {
     setLoading(true);
     axiosClient
@@ -86,6 +97,7 @@ export default function ProductViewPage() {
                   <td>{p.id}</td>
                   <td>{p.cat_id}</td>
                   <td>{p.sup_id}</td>
+                  <td>{p.cat_id}</td>
                   <td>{p.product_id}</td>
                   <td>{p.brand_id}</td>
                   <td>{p.product_name}</td>
@@ -94,7 +106,7 @@ export default function ProductViewPage() {
                   <td>{p.product_route}</td>
                   <td>
                     {p.product_image && (
-                      <img src={p.product_image} alt={p.product_image} style={{ width: "50px", height: "auto" }} />
+                      <img src={getImageURL(p.product_image)} alt={getImageURL(p.product_image)} style={{ width: "50px", height: "auto" }} />
                     )}
                   </td>
                   <td>{p.buy_date}</td>
@@ -102,7 +114,7 @@ export default function ProductViewPage() {
                   <td>{p.buying_price}</td>
                   <td>{p.price}</td>
                   <td>
-                    <Link className="btn-edit" to={`/products/${p.id}`}>
+                    <Link className="btn-edit" to={`/products/edit/${p.id}`}>
                       Edit
                     </Link>
                     &nbsp;

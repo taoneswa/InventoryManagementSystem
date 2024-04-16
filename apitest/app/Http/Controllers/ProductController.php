@@ -33,19 +33,18 @@ class ProductController extends Controller
     public function store(StoreProductRequest $request)
     {
 
-// Decode base64 data to binary
+      // Decode base64 data to binary
 $imageData = base64_decode($request->product_image);
 
 // Generate a random filename
 $randomFilename = uniqid('image_', true) . '.png';
 
-$projectPath = __DIR__;
-
-// Path to save the image
-$imagePath = $projectPath . '/images/' . $randomFilename;
+// Path to save the image in the storage folder
+$imagePath = storage_path('app/public/images/') . $randomFilename;
 
 // Save the image to file
 file_put_contents($imagePath, $imageData);
+
 
         Product::create([
             "cat_id"=>$request->cat_id,
@@ -68,9 +67,10 @@ file_put_contents($imagePath, $imageData);
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
+      public function show($id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return response()->json($product);
     }
 
     /**

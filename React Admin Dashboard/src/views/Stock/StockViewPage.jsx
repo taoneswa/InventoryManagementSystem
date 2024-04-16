@@ -14,7 +14,7 @@ export default function StockViewPage() {
 
   const getStock = () => {
     setLoading(true);
-    axiosClient.get('/stock')
+    axiosClient.get('/stocks')
       .then((data) => {
         setLoading(false);
         setStock(data.data || []); // Ensure data.data is an array or default to empty array
@@ -28,7 +28,7 @@ export default function StockViewPage() {
     <div>
       <div style={{ display: 'flex', justifyContent: "space-between", alignItems: "center" }}>
         <h1>Stock</h1>
-        <Link className="btn-add" to="/stock/new">Add new</Link>
+        <Link className="btn-add" to="/stocks/new">Add new</Link>
       </div>
       <div className="card animated fadeInDown">
         {loading ? (
@@ -46,13 +46,13 @@ export default function StockViewPage() {
             </thead>
             <tbody>
               {stock.map(item => (
-                <tr key={item.product_id}>
+                <tr key={item.id}>
                   <td>{item.product_id}</td>
                   <td>{item.quantity}</td>
                   <td>{item.amount}</td>
                   <td>{item.total_amount}</td>
                   <td>
-                    <Link className="btn-edit" to={`/stock/${item.product_id}`}>Edit</Link>
+                    <Link className="btn-edit" to={"/stocks/edit/" + item.id}>Edit</Link>
                     &nbsp;
                     <button className="btn-delete" onClick={() => onDeleteClick(item)}>Delete</button>
                   </td>

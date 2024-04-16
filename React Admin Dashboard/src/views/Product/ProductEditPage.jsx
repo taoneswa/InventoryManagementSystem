@@ -1,102 +1,190 @@
-import React, { useState, useEffect } from 'react';
-import { Button, TextField, Grid, Paper, Typography, Snackbar } from '@mui/material';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import axiosClient from "../../axios-client.js";
+import { useNavigate, useParams } from "react-router-dom";
+import { useStateContext } from "../../context/ContextProvider.jsx";
 
-const ProductEditPage = ({ match }) => {
-    const [productData, setProductData] = useState({
-        cat_id: '',
-        sup_id: '',
-        product_name: '',
-        product_code: '',
-        product_garage: '',
-        product_route: '',
-        product_image: '',
-        buy_date: '',
-        expire_date: '',
-        buying_price: '',
-        price: '',
+export default function ProductEdit() {
+    const navigate = useNavigate();
+    const { setNotification } = useStateContext();
+    const { id } = useParams();
+
+    const [product, setProduct] = useState({
+        cat_id: "",
+        sup_id: "",
+        brand_id: "",
+        product_id: "",
+        product_name: "",
+        product_code: "",
+        product_garage: "",
+        product_route: "",
+        product_image: "",
+        buy_date: "",
+        expire_date: "",
+        buying_price: "",
+        price: "",
     });
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-
-    const productId = match.params.id; // Assuming you're using react-router
+    const [errors, setErrors] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const fetchProductData = async () => {
-            try {
-                const response = await axios.get(`/api/products/${productId}`); // Adjust API URL as needed
-                setProductData(response.data);
-            } catch (error) {
-                console.error('Error fetching product data:', error);
-                setSnackbarMessage('Failed to fetch product data!');
-                setSnackbarOpen(true);
-            }
+        // Fetch product data to populate the form
+        axiosClient
+            .get(`/products/${id}`)
+            .then((response) => {
+                setProduct(response.data);
+            })
+            .catch((error) => {
+                console.error("Error fetching product data:", error);
+            });
+    }, [id]);
+
+    const handleImageChange = (ev) => {
+        const file = ev.target.files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = () => {
+            setProduct({ ...product, product_image: reader.result });
         };
 
-        fetchProductData();
-    }, [productId]);
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setProductData({ ...productData, [name]: value });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.put(`/api/products/${productId}`, productData); // Adjust API URL as needed
-            if (response.status === 200) {
-                setSnackbarMessage('Product updated successfully!');
-                setSnackbarOpen(true);
-                // Optionally redirect or perform further actions
-            }
-        } catch (error) {
-            console.error('Error updating product:', error);
-            setSnackbarMessage('Failed to update product!');
-            setSnackbarOpen(true);
+        if (file) {
+            reader.readAsDataURL(file);
         }
     };
 
-    const handleSnackbarClose = () => {
-        setSnackbarOpen(false);
+    const onSubmit = (ev) => {
+        ev.preventDefault();
+        setLoading(true);
+        axiosClient
+            .put(`/products/${id}`, product) // Assuming API supports updating via PUT method
+            .then(() => {
+                setLoading(false);
+                setNotification("Product was successfully updated");
+                navigate("/products");
+            })
+            .catch((err) => {
+                setLoading(false);
+                const response = err.response;
+                if (response && response.status === 422) {
+                    setErrors(response.data.errors);
+                }
+            });
     };
 
     return (
-        <Grid container justifyContent="center">
-            <Grid item xs={12} md={8} lg={6}>
-                <Paper style={{ padding: 20, marginTop: 30 }}>
-                    <Typography variant="h6" gutterBottom>
-                        Edit Product
-                    </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <Grid container spacing={2}>
-                            {Object.keys(productData).map((key) =>
-                                key !== 'id' && key !== 'product_image' ? ( // Assuming 'id' and 'product_image' should not be edited
-                                    <Grid item xs={12} sm={6} key={key}>
-                                        <TextField
-                                            fullWidth
-                                            label={key.replace(/_/g, ' ').toUpperCase()}
-                                            variant="outlined"
-                                            name={key}
-                                            value={productData[key]}
-                                            onChange={handleChange}
-                                            type={key.includes('date') ? 'date' : 'text'}
-                                        />
-                                    </Grid>
-                                ) : null,
-                            )}
-                            <Grid item xs={12}>
-                                <Button type="submit" variant="contained" color="primary">
-                                    Update
-                                </Button>
-                            </Grid>
-                        </Grid>
-                    </form>
-                </Paper>
-            </Grid>
-            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose} message={snackbarMessage} />
-        </Grid>
-    );
-};
+        <>
+            <h1>Edit Product</h1>
+            <div className="card animated fadeInDown">
+                {loading && <div className="text-center">Loading...</div>}
+                {errors && (
+                    <div className="alert">
+                        {Object.keys(errors).map((key) => (
+                            <p key={key}>{errors[key][0]}</p>
+                        ))}
+                    </div>
+                )}
+                {!loading && (
+                    <form onSubmit={onSubmit}>
+                        {/* Render form fields with product data */}
+                        <input
+                            value={product.cat_id}
+                            onChange={(ev) =>
+                                setProduct({ ...product, cat_id: ev.target.value })
+                            }
+                            placeholder="Category ID"
+                        />
+                        <input
+                            value={product.sup_id}
+                            onChange={(ev) =>
+                                setProduct({ ...product, sup_id: ev.target.value })
+                            }
+                            placeholder="Supplier ID"
+                        />
+                        <input
+                            value={product.brand_id}
+                            onChange={(ev) =>
+                                setProduct({ ...product, brand_id: ev.target.value })
+                            }
+                            placeholder="Brand ID"
+                        />
+                        <input
+                            value={product.product_id}
+                            onChange={(ev) =>
+                                setProduct({ ...product, product_id: ev.target.value })
+                            }
+                            placeholder="Product ID"
+                        />
+                        <input
+                            value={product.product_name}
+                            onChange={(ev) =>
+                                setProduct({ ...product, product_name: ev.target.value })
+                            }
+                            placeholder="Product Name"
+                        />
+                        <input
+                            value={product.product_code}
+                            onChange={(ev) =>
+                                setProduct({ ...product, product_code: ev.target.value })
+                            }
+                            placeholder="Product Code"
+                        />
+                        <input
+                            value={product.product_garage}
+                            onChange={(ev) =>
+                                setProduct({ ...product, product_garage: ev.target.value })
+                            }
+                            placeholder="Product Garage"
+                        />
+                        <input
+                            value={product.product_route}
+                            onChange={(ev) =>
+                                setProduct({ ...product, product_route: ev.target.value })
+                            }
+                            placeholder="Product Route"
+                        />
+                        <input
+                            type="file"
+                            onChange={(ev) => handleImageChange(ev)}
+                            accept="image/*"
+                        />
 
-export default ProductEditPage;
+                        <input
+                            type="date"
+                            value={product.buy_date}
+                            onChange={(ev) =>
+                                setProduct({ ...product, buy_date: ev.target.value })
+                            }
+                            placeholder="Buy Date"
+                        />
+                        <input
+                            type="date"
+                            value={product.expire_date}
+                            onChange={(ev) =>
+                                setProduct({ ...product, expire_date: ev.target.value })
+                            }
+                            placeholder="Expire Date"
+                        />
+                        <input
+                            type="number"
+                            value={product.buying_price}
+                            onChange={(ev) =>
+                                setProduct({ ...product, buying_price: ev.target.value })
+                            }
+                            placeholder="Buying Price"
+                        />
+                        <input
+                            type="number"
+                            value={product.price}
+                            onChange={(ev) =>
+                                setProduct({ ...product, price: ev.target.value })
+                            }
+                            placeholder="Price"
+                        />
+
+
+                        <button className="btn">Update Product</button>
+                    </form>
+                )}
+            </div>
+        </>
+    );
+}

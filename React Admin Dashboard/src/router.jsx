@@ -29,6 +29,8 @@ import SupplierAddPage from "./views/Supplier/SupplierAddPage.jsx";
 import OrderingAddPage from "./views/Ordering/OrderingAddPage.jsx";
 import OrderingViewPage from "./views/Ordering/OrderingViewPage.jsx";
 import BrandEditPage from "./views/Brand/BrandEditPage.jsx";
+import StockEditPage from "./views/Stock/StockEditPage.jsx";
+import ProductEdit from "./views/Product/ProductEditPage.jsx";
 const router = createBrowserRouter([
 
   {
@@ -70,13 +72,22 @@ const router = createBrowserRouter([
         element: <ProductViewPage />
       },
       {
-        path: '/stock',
+        path: '/products/edit/:id',
+        element: <ProductEdit key="productUpdate" />
+      },
+      {
+        path: '/stocks',
         element: <StockViewPage />
       },
 
       {
-        path: '/stock/new',
+        path: '/stocks/new',
         element: <StockAddPage key="stockCreate" />
+      },
+
+      {
+        path: '/stocks/edit/:id',
+        element: <StockEditPage key="stockUpdate" />
       },
 
       {

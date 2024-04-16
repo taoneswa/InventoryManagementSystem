@@ -40,7 +40,7 @@ export default function DefaultLayout() {
       <aside>
         <Link to="/"><FaHome /> Dashboard</Link>
         <Link to="/products"><FaBoxes /> Products</Link>
-        <Link to="/stock"><FaCubes /> Stock</Link>
+        <Link to="/stocks"><FaCubes /> Stock</Link>
         <Link to="/brands"><FaListAlt /> Brand</Link>
         <Link to="/customers"><FaUserFriends /> Customers</Link>
         <Link to="/suppliers"><FaTruck /> Suppliers</Link>
