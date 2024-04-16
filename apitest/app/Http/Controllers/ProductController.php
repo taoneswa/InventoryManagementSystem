@@ -32,18 +32,30 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
-        $report = $request->file('report');
-        $directory = 'reports';
-        $path = $report->store($directory, 'public');
+
+// Decode base64 data to binary
+$imageData = base64_decode($request->product_image);
+
+// Generate a random filename
+$randomFilename = uniqid('image_', true) . '.png';
+
+$projectPath = __DIR__;
+
+// Path to save the image
+$imagePath = $projectPath . '/images/' . $randomFilename;
+
+// Save the image to file
+file_put_contents($imagePath, $imageData);
+
         Product::create([
             "cat_id"=>$request->cat_id,
             "sup_id"=>$request->sup_id,
             "product_name"=>$request->product_name,
+            "product_id"=>$request->product_id,
             "product_code"=>$request->product_code,
             "product_garage"=>$request->product_garage,
             "product_route"=>$request->product_route,
-            "product_image"=>$path,
+            "product_image"=>$imagePath,
             "buy_date"=>$request->buy_date,
             "expire_date"=>$request->expire_date,
             "buying_price"=>$request->buying_price,

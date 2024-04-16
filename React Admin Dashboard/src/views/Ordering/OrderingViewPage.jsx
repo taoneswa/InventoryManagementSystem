@@ -1,84 +1,67 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { useParams } from 'react-router-dom';
-import { Paper, Typography, Grid, CircularProgress } from '@mui/material';
+import React, { useEffect, useState } from "react";
+import axiosClient from "../../axios-client.js";
 
-const OrderingViewPage = () => {
-    const { id } = useParams();
-    const [ordering, setOrdering] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+export default function OrderingViewPage() {
+    const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        const fetchOrdering = async () => {
-            try {
-                const response = await axios.get(`ordering/${id}`); // Adjust the API URL as needed
-                setOrdering(response.data);
+        fetchOrders();
+    }, []);
+
+    const fetchOrders = () => {
+        setLoading(true);
+        axiosClient.get('/orders')
+            .then(({ data }) => {
                 setLoading(false);
-            } catch (err) {
-                console.error('Failed to fetch orders:', err);
-                setError('Failed to fetch order details');
+                setOrders(data.data);
+            })
+            .catch(() => {
                 setLoading(false);
-            }
-        };
-
-        fetchOrdering();
-    }, [id]);
-
-    if (loading) {
-        return (
-            <Grid container justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
-                <CircularProgress />
-            </Grid>
-        );
-    }
-
-    if (error) {
-        return (
-            <Typography variant="h6" color="error" textAlign="center">
-                {error}
-            </Typography>
-        );
-    }
+            });
+    };
 
     return (
-        <div className='main-container'>
-            <Paper elevation={3} style={{ padding: 20, margin: '20px auto', maxWidth: 600 }}>
-                <Typography variant="h4" component="h1" gutterBottom>
-                    Employee Details
-                </Typography>
-                {employee ? (
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Name:</strong> {ordering.product_name}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Email:</strong> {ordering.description}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Phone:</strong> {ordering.product_code}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Employee ID:</strong> {ordering.order_date}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>NID No:</strong> {ordering.delivery_date}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Experience:</strong> {ordering.quantity}</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Typography variant="body1"><strong>Salary:</strong> {ordering.total_amount}</Typography>
-                        </Grid>
-
-                    </Grid>
-                ) : (
-                    <Typography variant="body1">Order not found</Typography>
-                )}
-            </Paper>
+        <div>
+            <h1>Ordering View Page</h1>
+            <div className="card animated fadeInDown">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th>Description</th>
+                            <th>Product Code</th>
+                            <th>Order Date</th>
+                            <th>Delivery Date</th>
+                            <th>Quantity</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    {loading ? (
+                        <tbody>
+                            <tr>
+                                <td colSpan="7" className="text-center">
+                                    Loading...
+                                </td>
+                            </tr>
+                        </tbody>
+                    ) : (
+                        <tbody>
+                            {orders && orders.map(order => (
+                                <tr key={order.id}>
+                                    <td>{order.product_name}</td>
+                                    <td>{order.description}</td>
+                                    <td>{order.product_code}</td>
+                                    <td>{order.order_date}</td>
+                                    <td>{order.delivery_date}</td>
+                                    <td>{order.quantity}</td>
+                                    <td>{order.total_amount}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    )}
+                </table>
+            </div>
         </div>
-
     );
-};
-
-export default OrderingViewPage;
+}

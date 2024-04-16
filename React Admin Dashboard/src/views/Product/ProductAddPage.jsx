@@ -10,7 +10,8 @@ export default function ProductAdd() {
   const [product, setProduct] = useState({
     cat_id: "",
     sup_id: "",
-    cat_id: "",
+    brand_id: "",
+    product_id: "",
     product_name: "",
     product_code: "",
     product_garage: "",
@@ -23,7 +24,18 @@ export default function ProductAdd() {
   });
   const [errors, setErrors] = useState(null);
   const [loading, setLoading] = useState(false);
+  const handleImageChange = (ev) => {
+    const file = ev.target.files[0];
+    const reader = new FileReader();
 
+    reader.onloadend = () => {
+      setProduct({ ...product, product_image: reader.result });
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
   const onSubmit = (ev) => {
     ev.preventDefault();
     setLoading(true);
@@ -72,6 +84,20 @@ export default function ProductAdd() {
               placeholder="Supplier ID"
             />
             <input
+              value={product.brand_id}
+              onChange={(ev) =>
+                setProduct({ ...product, brand_id: ev.target.value })
+              }
+              placeholder="Brand ID"
+            />
+            <input
+              value={product.product_id}
+              onChange={(ev) =>
+                setProduct({ ...product, product_id: ev.target.value })
+              }
+              placeholder="Product ID"
+            />
+            <input
               value={product.product_name}
               onChange={(ev) =>
                 setProduct({ ...product, product_name: ev.target.value })
@@ -100,12 +126,11 @@ export default function ProductAdd() {
               placeholder="Product Route"
             />
             <input
-              value={product.product_image}
-              onChange={(ev) =>
-                setProduct({ ...product, product_image: ev.target.value })
-              }
-              placeholder="Product Image"
+              type="file"
+              onChange={(ev) => handleImageChange(ev)}
+              accept="image/*"
             />
+
             <input
               type="date"
               value={product.buy_date}

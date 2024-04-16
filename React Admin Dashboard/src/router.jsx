@@ -26,6 +26,9 @@ import CustomersViewPage from "./views/Customers/CustomersViewPage.jsx";
 import CustomersAddPage from "./views/Customers/CustomersAddPage.jsx";
 import SupplierViewPage from "./views/Supplier/SupplierViewPage.jsx";
 import SupplierAddPage from "./views/Supplier/SupplierAddPage.jsx";
+import OrderingAddPage from "./views/Ordering/OrderingAddPage.jsx";
+import OrderingViewPage from "./views/Ordering/OrderingViewPage.jsx";
+import BrandEditPage from "./views/Brand/BrandEditPage.jsx";
 const router = createBrowserRouter([
 
   {
@@ -34,23 +37,33 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/users',
-        element: <Navigate to="/users" />
+        element: <Users />
       },
       {
         path: '/',
         element: <Dashboard />
       },
-      {
-        path: '/users',
-        element: <Users />
-      },
+
       {
         path: '/brands',
         element: <BrandViewPage />
       },
       {
+        path: '/brands/edit/:id',
+        element: <BrandEditPage />
+      },
+
+      {
+        path: '/orders',
+        element: <OrderingViewPage />
+      },
+      {
         path: '/categories',
         element: <CategoryViewPage />
+      },
+      {
+        path: '/orders',
+        element: <OrderingAddPage key="orderCreate" />
       },
       {
         path: '/products',

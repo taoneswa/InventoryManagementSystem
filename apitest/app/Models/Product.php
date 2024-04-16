@@ -13,6 +13,7 @@ class Product extends Model
         "cat_id",
         "sup_id",
         "product_name",
+        "brand_id",
         "product_code",
         "product_id",
         "product_garage",

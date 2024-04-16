@@ -36,14 +36,12 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::apiResource('/users', UserController::class);
-
-    Route::apiResource('/users', UserController::class);
     Route::apiResource('/employees', EmployeeController::class);
     Route::apiResource('/attendance', AttendanceController::class);
-    Route::apiResource('/brands',BrandController::class);
+    Route::apiResource('/api/brands',BrandController::class);
     Route::apiResource('/categories', CategoryController::class);
     Route::apiResource('/customers', CustomersController::class);
-    Route::apiResource('/ordering', OrderingController::class);
+    Route::apiResource('/orders', OrderingController::class);
     Route::apiResource('/products',ProductController::class);
     Route::apiResource('/reports',ReportsController::class);
     Route::apiResource('/salary',SalaryController::class);

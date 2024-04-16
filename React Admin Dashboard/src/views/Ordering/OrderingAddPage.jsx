@@ -1,83 +1,115 @@
-import React, { useState } from 'react';
-import { Button, TextField, Grid, Paper, Typography, Snackbar } from '@mui/material';
-import axios from 'axios';
+import React, { useState } from "react";
+import axiosClient from "../../axios-client.js";
+import { useNavigate } from "react-router-dom";
+import { useStateContext } from "../../context/ContextProvider.jsx";
 
-const OrderingAddPage = () => {
-    const [orderData, setOrderData] = useState({
-        product_name: '',
-        description: '',
-        product_code: '',
-        order_date: '',
-        delivery_date: '',
-        quantity: '',
-        total_amount: ''
+export default function OrderingAddPage() {
+    const navigate = useNavigate();
+    const [order, setOrder] = useState({
+        product_name: "",
+        description: "",
+        product_code: "",
+        order_date: "",
+        delivery_date: "",
+        quantity: "",
+        total_amount: ""
     });
+    const [errors, setErrors] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const { setNotification } = useStateContext();
 
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [snackbarMessage, setSnackbarMessage] = useState('');
-
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setOrderData({ ...orderData, [name]: value });
-    };
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('/ordering', orderData, {
-                headers: {
-                    'Content-Type': 'application/json'
+    const onSubmit = (ev) => {
+        ev.preventDefault();
+        setLoading(true);
+        axiosClient
+            .post("/orders", order)
+            .then(() => {
+                setLoading(false);
+                setNotification("Order was successfully created");
+                navigate("/orders");
+                // Reset form after successful submission
+                setOrder({
+                    product_name: "",
+                    description: "",
+                    product_code: "",
+                    order_date: "",
+                    delivery_date: "",
+                    quantity: "",
+                    total_amount: ""
+                });
+            })
+            .catch((err) => {
+                setLoading(false);
+                const response = err.response;
+                if (response && response.status === 422) {
+                    setErrors(response.data.errors);
+                } else {
+                    // Handle other errors
+                    setErrors({ general: "Something went wrong. Please try again later." });
                 }
             });
-            if (response.status === 200 || response.status === 201) {
-                setSnackbarMessage('Order added successfully!');
-                setSnackbarOpen(true);
-                // Clear form or redirect as needed
-            }
-        } catch (error) {
-            console.error('Error adding order:', error);
-            setSnackbarMessage('Failed to add order!');
-            setSnackbarOpen(true);
-        }
-    };
-
-    const handleSnackbarClose = () => {
-        setSnackbarOpen(false);
     };
 
     return (
-        <Grid container justifyContent="center" className='main-container'>
-            <Grid item xs={12} md={8} lg={6}>
-                <Paper style={{ padding: 20, marginTop: 30 }}>
-                    <Typography variant="h6" gutterBottom>
-                        Add New Order
-                    </Typography>
-                    <form onSubmit={handleSubmit}>
-                        <Grid container spacing={2}>
-                            {Object.keys(orderData).map((key) => (
-                                <Grid item xs={12} key={key}>
-                                    <TextField
-                                        fullWidth
-                                        label={key.replace('_', ' ').toUpperCase()}
-                                        variant="outlined"
-                                        name={key}
-                                        value={orderData[key]}
-                                        onChange={handleChange}
-                                    />
-                                </Grid>
-                            ))}
-                            <Grid item xs={12}>
-                                <Button type="submit" variant="contained" color="primary">
-                                    Submit
-                                </Button>
-                            </Grid>
-                        </Grid>
+        <>
+            <h1>New Order</h1>
+            <div className="card animated fadeInDown">
+                {loading && <div className="text-center">Loading...</div>}
+                {errors && (
+                    <div className="alert">
+                        {Object.keys(errors).map((key) => (
+                            <p key={key}>{errors[key][0]}</p>
+                        ))}
+                    </div>
+                )}
+                {!loading && (
+                    <form onSubmit={onSubmit}>
+                        <input
+                            type="text"
+                            value={order.product_name}
+                            onChange={(ev) => setOrder({ ...order, product_name: ev.target.value })}
+                            placeholder="Product Name"
+                        />
+                        <input
+                            type="text"
+                            value={order.description}
+                            onChange={(ev) => setOrder({ ...order, description: ev.target.value })}
+                            placeholder="Description"
+                        />
+                        <input
+                            type="text"
+                            value={order.product_code}
+                            onChange={(ev) => setOrder({ ...order, product_code: ev.target.value })}
+                            placeholder="Product Code"
+                        />
+                        <input
+                            type="date"
+                            value={order.order_date}
+                            onChange={(ev) => setOrder({ ...order, order_date: ev.target.value })}
+                            placeholder="Order Date"
+                        />
+                        <input
+                            type="date"
+                            value={order.delivery_date}
+                            onChange={(ev) => setOrder({ ...order, delivery_date: ev.target.value })}
+                            placeholder="Delivery Date"
+                        />
+                        <input
+                            type="number"
+                            value={order.quantity}
+                            onChange={(ev) => setOrder({ ...order, quantity: ev.target.value })}
+                            placeholder="Quantity"
+                        />
+                        <input
+                            type="number"
+                            value={order.total_amount}
+                            onChange={(ev) => setOrder({ ...order, total_amount: ev.target.value })}
+                            placeholder="Total Amount"
+                        />
+                        <button className="btn" disabled={loading}>Save</button>
                     </form>
-                </Paper>
-            </Grid>
-            <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={handleSnackbarClose} message={snackbarMessage} />
-        </Grid>
+                )}
+            </div>
+        </>
     );
-};
-
-export default OrderingAddPage;
+}

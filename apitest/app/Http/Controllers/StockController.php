@@ -35,7 +35,12 @@ class StockController extends Controller
         //
 
         Stock::create([
-            $request->validated(),
+
+
+            "product_id"=>$request->product_id,
+            "quantity"=>$request->quantity,
+            "amount"=>$request->amount,
+            "total_amount"=>$request->total_amount,
         ]);
     }
 

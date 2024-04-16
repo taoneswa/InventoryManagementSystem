@@ -26,7 +26,11 @@ class BrandController extends Controller
     {
         //
     }
-
+    public function show($id)
+    {
+        $brand = Brand::findOrFail($id);
+        return response()->json($brand);
+    }
     /**
      * Store a newly created resource in storage.
      */
@@ -39,10 +43,7 @@ class BrandController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Brand $brand)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.

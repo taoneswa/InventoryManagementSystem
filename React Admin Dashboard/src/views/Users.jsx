@@ -5,7 +5,7 @@ import { useStateContext } from "../context/ContextProvider.jsx";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const { setNotification } = useStateContext()
 
   useEffect(() => {

@@ -17,6 +17,7 @@ export default function StockAddPage() {
 
   const onSubmit = (ev) => {
     ev.preventDefault();
+    setStock(prevState => ({ ...prevState, "product_id": parseInt(stock.product_id) }))
     axiosClient
       .post("/stock", stock)
       .then(() => {

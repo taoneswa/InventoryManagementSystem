@@ -17,7 +17,7 @@ export default function BrandViewPage() {
       return;
     }
     axiosClient
-      .delete(`/brands/${brand.id}`)
+      .delete(`api/brands/${brand.id}`)
       .then(() => {
         setNotification("Brand was successfully deleted");
         getBrands();
@@ -29,8 +29,12 @@ export default function BrandViewPage() {
 
   const getBrands = () => {
     setLoading(true);
-    axiosClient.get('/brands')
-      .then(({ data }) => {
+    axiosClient.get('api/brands')
+      .then((data) => {
+        console.log(data.data);
+        console.log(data.data);
+        console.log(data.data);
+
         setLoading(false);
         setBrands(data.data); // Corrected to setBrands
       })
@@ -75,7 +79,7 @@ export default function BrandViewPage() {
                   <td>{brand.cat_id}</td>
                   <td>{brand.sup_id}</td>
                   <td>
-                    <Link className="btn-edit" to={"/brands/" + brand.id}>
+                    <Link className="btn-edit" to={"/brands/edit/" + brand.id}>
                       Edit
                     </Link>
                     &nbsp;

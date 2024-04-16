@@ -13,10 +13,14 @@ export default function DefaultLayout() {
     if (token) {
       axiosClient.get('/user')
         .then(({ data }) => {
-          setUser(data)
+          setUser(data);
         })
+        .catch(error => {
+          console.error('Error fetching user:', error);
+        });
     }
-  }, []);
+  }, [token]); // Add token as a dependency
+
   if (!token) {
     return <Navigate to="/login" />
   }

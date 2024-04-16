@@ -18,17 +18,22 @@ export default function BrandAddPage() {
     ev.preventDefault();
     setLoading(true);
     axiosClient
-      .post("/brands", brand)
+      .post("api/brands", brand)
       .then(() => {
         setLoading(false);
         setNotification("Brand was successfully created");
         navigate("/brands");
+        // Reset form after successful submission
+        setBrand({ name: "", cat_id: "", sup_id: "" });
       })
       .catch((err) => {
         setLoading(false);
         const response = err.response;
         if (response && response.status === 422) {
           setErrors(response.data.errors);
+        } else {
+          // Handle other errors
+          setErrors({ general: "Something went wrong. Please try again later." });
         }
       });
   };
@@ -48,21 +53,24 @@ export default function BrandAddPage() {
         {!loading && (
           <form onSubmit={onSubmit}>
             <input
+              type="text"
               value={brand.name}
               onChange={(ev) => setBrand({ ...brand, name: ev.target.value })}
               placeholder="Name"
             />
             <input
+              type="text"
               value={brand.cat_id}
               onChange={(ev) => setBrand({ ...brand, cat_id: ev.target.value })}
               placeholder="Category ID"
             />
             <input
+              type="text"
               value={brand.sup_id}
               onChange={(ev) => setBrand({ ...brand, sup_id: ev.target.value })}
               placeholder="Supplier ID"
             />
-            <button className="btn">Save</button>
+            <button className="btn" disabled={loading}>Save</button>
           </form>
         )}
       </div>

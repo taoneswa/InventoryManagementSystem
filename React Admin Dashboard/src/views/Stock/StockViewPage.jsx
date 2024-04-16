@@ -15,7 +15,7 @@ export default function StockViewPage() {
   const getStock = () => {
     setLoading(true);
     axiosClient.get('/stock')
-      .then(({ data }) => {
+      .then((data) => {
         setLoading(false);
         setStock(data.data || []); // Ensure data.data is an array or default to empty array
       })

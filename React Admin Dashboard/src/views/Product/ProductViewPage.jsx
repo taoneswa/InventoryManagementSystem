@@ -31,7 +31,7 @@ export default function ProductViewPage() {
     setLoading(true);
     axiosClient
       .get("/products")
-      .then(({ data }) => {
+      .then((data) => {
         setLoading(false);
         setProducts(data.data);
       })
@@ -56,6 +56,8 @@ export default function ProductViewPage() {
               <th>ID</th>
               <th>Category ID</th>
               <th>Supplier ID</th>
+              <th>Product ID</th>
+              <th>Brand ID</th>
               <th>Name</th>
               <th>Code</th>
               <th>Garage</th>
@@ -84,13 +86,15 @@ export default function ProductViewPage() {
                   <td>{p.id}</td>
                   <td>{p.cat_id}</td>
                   <td>{p.sup_id}</td>
+                  <td>{p.product_id}</td>
+                  <td>{p.brand_id}</td>
                   <td>{p.product_name}</td>
                   <td>{p.product_code}</td>
                   <td>{p.product_garage}</td>
                   <td>{p.product_route}</td>
                   <td>
                     {p.product_image && (
-                      <img src={p.product_image} alt={p.product_name} style={{ width: "50px", height: "auto" }} />
+                      <img src={p.product_image} alt={p.product_image} style={{ width: "50px", height: "auto" }} />
                     )}
                   </td>
                   <td>{p.buy_date}</td>
@@ -110,7 +114,7 @@ export default function ProductViewPage() {
               ))}
             </tbody>
           )}
-          
+
         </table>
       </div>
     </div>
