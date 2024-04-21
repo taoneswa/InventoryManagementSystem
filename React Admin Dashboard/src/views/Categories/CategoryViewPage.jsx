@@ -26,7 +26,7 @@ export default function CategoryViewPage() {
   const getCategories = () => {
     setLoading(true);
     axiosClient.get('/categories')
-      .then(({ data }) => {
+      .then((data) => {
         setLoading(false);
         setCategories(data.data);
       })

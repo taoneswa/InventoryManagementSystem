@@ -22,7 +22,7 @@ class StoreCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_name'=> 'required',
+            'cat_id'=> 'required',
         ];
     }
 }

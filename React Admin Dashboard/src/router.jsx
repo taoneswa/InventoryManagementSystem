@@ -31,6 +31,7 @@ import OrderingViewPage from "./views/Ordering/OrderingViewPage.jsx";
 import BrandEditPage from "./views/Brand/BrandEditPage.jsx";
 import StockEditPage from "./views/Stock/StockEditPage.jsx";
 import ProductEdit from "./views/Product/ProductEditPage.jsx";
+import CategoryAddPage from "./views/Categories/CategoryAddPage.jsx";
 const router = createBrowserRouter([
 
   {
@@ -62,6 +63,10 @@ const router = createBrowserRouter([
       {
         path: '/categories',
         element: <CategoryViewPage />
+      },
+      {
+        path: '/categories/new',
+        element: <CategoryAddPage key='categoryCreate' />
       },
       {
         path: '/orders',
