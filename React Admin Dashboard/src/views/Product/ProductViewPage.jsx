@@ -29,7 +29,7 @@ export default function ProductViewPage() {
 
   const getImageURL = (url) => {
     // Split the URL by backslashes
-    const parts = url.split("\\");
+    const parts = url.split("//");
 
     // Get the last part which contains the filename
     const filename = parts[parts.length - 1];
@@ -106,11 +106,16 @@ export default function ProductViewPage() {
                   <td>{p.product_route}</td>
                   <td>
                     {p.product_image && (
-                      <img src={getImageURL(p.product_image)} alt={getImageURL(p.product_image)} style={{ width: "50px", height: "auto" }} />
+                      <img
+                        src={getImageURL(p.product_image)}
+                        alt={p.product_name || 'Product Image'}
+                        style={{ width: '50px', height: 'auto' }}
+                      />
                     )}
                   </td>
+
                   <td>{p.buy_date}</td>
-                  <td>{p.expire_date}</td>
+                  <td>{p.expire_date}</td>  
                   <td>{p.buying_price}</td>
                   <td>{p.price}</td>
                   <td>
