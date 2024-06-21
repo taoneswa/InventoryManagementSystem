@@ -29,7 +29,7 @@ export default function ProductViewPage() {
 
   const getImageURL = (url) => {
     // Split the URL by backslashes
-    const parts = url.split("//");
+    const parts = url.split("/");
 
     // Get the last part which contains the filename
     const filename = parts[parts.length - 1];
@@ -115,7 +115,7 @@ export default function ProductViewPage() {
                   </td>
 
                   <td>{p.buy_date}</td>
-                  <td>{p.expire_date}</td>  
+                  <td>{p.expire_date}</td>
                   <td>{p.buying_price}</td>
                   <td>{p.price}</td>
                   <td>
